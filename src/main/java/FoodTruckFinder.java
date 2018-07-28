@@ -2,7 +2,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
@@ -23,28 +22,9 @@ public class FoodTruckFinder {
             ArrayList<FoodTruck> foodTrucks = fetchFoodTrucks();
             FoodTruckSearchResults foodTruckSearchResults = new FoodTruckSearchResults(foodTrucks);
 
-            Terminal terminal = new DefaultTerminalFactory().createTerminal();
-
-            displayHeader(terminal);
-            displayFoodTruckResults(terminal, foodTruckSearchResults);
-
-
-            KeyStroke keyStroke = terminal.readInput();
-
-            while (keyStroke.getKeyType() != KeyType.Enter) {
-
-                if (keyStroke.getKeyType() != KeyType.ArrowLeft) {
-                    foodTruckSearchResults.nextPage();
-                    displayFoodTruckResults(terminal, foodTruckSearchResults);
-
-                } else if (keyStroke.getKeyType() != KeyType.ArrowRight) {
-                    foodTruckSearchResults.previousPage();
-                    displayFoodTruckResults(terminal, foodTruckSearchResults);
-
-                }
-
-                keyStroke = terminal.readInput();
-            }
+            FoodTruckGraphicsTerminal foodTruckTerminal = new FoodTruckGraphicsTerminal();
+            foodTruckTerminal.displayFoodTruckResults( foodTruckSearchResults);
+            foodTruckTerminal.handleUserInput(foodTruckSearchResults);
 
             System.exit(0);
 
@@ -70,7 +50,7 @@ public class FoodTruckFinder {
 
         } catch (IOException ioe) {
 
-            System.out.println("Encountered an error attempting to fetch food truck data");
+            System.out.println("Error attempting to fetch food truck data");
             System.out.println(ioe.getLocalizedMessage());
             foodTrucks = new ArrayList<>();
         }
@@ -78,57 +58,11 @@ public class FoodTruckFinder {
         return foodTrucks;
     }
 
-    private static void printLineToTerminal(Terminal terminal, String output) {
-        try {
-            for (int i = 0; i < output.length(); i++) {
-
-                terminal.putCharacter(output.charAt(i));
-            }
-            terminal.putCharacter('\n');
-            terminal.flush();
-
-        } catch (IOException e) {
-            System.out.println("Encountered an error attempting to print to terminal");
-            System.out.println(e.getLocalizedMessage());
-        }
-    }
-
-    private static String addSpaces(int count) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < count; i++) {
-            stringBuilder.append(" ");
-        }
-        return stringBuilder.toString();
-    }
-
-    private static void displayFoodTruckResults(Terminal terminal, FoodTruckSearchResults foodTruckSearchResults) {
-
-        try {
-            terminal.clearScreen();
-        } catch (IOException e) {
-            System.out.println("Encountered an error attempting to clear the terminal screen");
-        }
-
-        displayHeader(terminal);
-        for (FoodTruck foodTruck : foodTruckSearchResults.getCurrentPageContents()) {
-            String output = padName(foodTruck.getName(), 25) + foodTruck.getAddress();
-            printLineToTerminal(terminal, output);
-        }
-    }
-
     // Construction is lightweight so we do it to avoid contention over a shared mapper
     private static ObjectMapper getMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.getTypeFactory().constructCollectionType(List.class, FoodTruck.class);
         return objectMapper;
-    }
-
-    private static String padName(String name, int padding) {
-        return name + addSpaces(padding - name.length());
-    }
-
-    private static void displayHeader(Terminal terminal) {
-        printLineToTerminal(terminal, padName("NAME", 25) + "ADDRESS");
     }
 }
 
