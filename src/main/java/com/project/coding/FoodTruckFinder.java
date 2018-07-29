@@ -26,8 +26,7 @@ public class FoodTruckFinder {
             FoodTruckTerminal foodTruckTerminal = new FoodTruckTerminal();
             foodTruckTerminal.displayFoodTruckResults( currentlyOpenFoodTrucks);
             foodTruckTerminal.handleUserInput(currentlyOpenFoodTrucks);
-
-            System.exit(0);
+            foodTruckTerminal.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

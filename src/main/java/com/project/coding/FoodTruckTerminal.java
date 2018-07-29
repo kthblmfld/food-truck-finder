@@ -96,4 +96,10 @@ public class FoodTruckTerminal {
     private static String padString(String string, int padding) {
         return string + buildSpaces(padding - string.length());
     }
+
+    public void close() throws IOException {
+        terminal.clearScreen();
+        terminal.close();
+        System.exit(0);
+    }
 }
