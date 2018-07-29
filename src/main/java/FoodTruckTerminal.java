@@ -6,12 +6,12 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 
-public class FoodTruckGraphicsTerminal {
+public class FoodTruckTerminal {
 
     private Terminal terminal;
     private TextGraphics textGraphics;
 
-    public FoodTruckGraphicsTerminal() {
+    public FoodTruckTerminal() {
 
         try {
             terminal = new DefaultTerminalFactory().createTerminal();
@@ -21,14 +21,14 @@ public class FoodTruckGraphicsTerminal {
         }
     }
 
-    void displayFoodTruckResults(FoodTruckSearchResults foodTruckSearchResults) {
+    void displayFoodTruckResults(CurrentlyOpenFoodTrucks currentlyOpenFoodTrucks) {
         try {
             terminal.clearScreen();
             displayHeader();
 
             int resultLine = 1;
 
-            for (FoodTruck foodTruck : foodTruckSearchResults.getCurrentPageContents()) {
+            for (FoodTruck foodTruck : currentlyOpenFoodTrucks.getCurrentPageContents()) {
                 String output = padName(foodTruck.getName(), 25) + foodTruck.getAddress();
                 textGraphics.putString(0, resultLine++, output);
             }
@@ -40,7 +40,7 @@ public class FoodTruckGraphicsTerminal {
         }
     }
 
-    private static String addSpaces(int count) {
+    private static String buildSpaces(int count) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < count; i++) {
             stringBuilder.append(" ");
@@ -53,10 +53,10 @@ public class FoodTruckGraphicsTerminal {
     }
 
     private static String padName(String name, int padding) {
-        return name + addSpaces(padding - name.length());
+        return name + buildSpaces(padding - name.length());
     }
 
-    public void handleUserInput(FoodTruckSearchResults foodTruckSearchResults) {
+    public void handleUserInput(CurrentlyOpenFoodTrucks currentlyOpenFoodTrucks) {
 
         try {
 
@@ -65,12 +65,12 @@ public class FoodTruckGraphicsTerminal {
             while (keyStroke.getKeyType() != KeyType.Enter) {
 
                 if (keyStroke.getKeyType() != KeyType.ArrowLeft) {
-                    foodTruckSearchResults.nextPage();
-                    displayFoodTruckResults(foodTruckSearchResults);
+                    currentlyOpenFoodTrucks.nextPage();
+                    displayFoodTruckResults(currentlyOpenFoodTrucks);
 
                 } else if (keyStroke.getKeyType() != KeyType.ArrowRight) {
-                    foodTruckSearchResults.previousPage();
-                    displayFoodTruckResults(foodTruckSearchResults);
+                    currentlyOpenFoodTrucks.previousPage();
+                    displayFoodTruckResults(currentlyOpenFoodTrucks);
 
                 }
 

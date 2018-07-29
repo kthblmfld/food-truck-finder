@@ -1,8 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -19,12 +16,12 @@ public class FoodTruckFinder {
 
         try {
 
-            ArrayList<FoodTruck> foodTrucks = fetchFoodTrucks();
-            FoodTruckSearchResults foodTruckSearchResults = new FoodTruckSearchResults(foodTrucks);
+            List<FoodTruck> allFoodTrucks = fetchFoodTrucks();
+            CurrentlyOpenFoodTrucks currentlyOpenFoodTrucks = new CurrentlyOpenFoodTrucks(allFoodTrucks);
 
-            FoodTruckGraphicsTerminal foodTruckTerminal = new FoodTruckGraphicsTerminal();
-            foodTruckTerminal.displayFoodTruckResults( foodTruckSearchResults);
-            foodTruckTerminal.handleUserInput(foodTruckSearchResults);
+            FoodTruckTerminal foodTruckTerminal = new FoodTruckTerminal();
+            foodTruckTerminal.displayFoodTruckResults( currentlyOpenFoodTrucks);
+            foodTruckTerminal.handleUserInput(currentlyOpenFoodTrucks);
 
             System.exit(0);
 
@@ -33,9 +30,9 @@ public class FoodTruckFinder {
         }
     }
 
-    private static ArrayList<FoodTruck> fetchFoodTrucks() {
+    private static List<FoodTruck> fetchFoodTrucks() {
 
-        ArrayList<FoodTruck> foodTrucks;
+        List<FoodTruck> foodTrucks;
 
         try {
             URL url = new URL(URL_FOOD_TRUCKS);
@@ -62,6 +59,7 @@ public class FoodTruckFinder {
     private static ObjectMapper getMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.getTypeFactory().constructCollectionType(List.class, FoodTruck.class);
+        objectMapper.findAndRegisterModules();
         return objectMapper;
     }
 }
