@@ -19,6 +19,8 @@ Grab a pre-build jar file from the latest release in Github and run command
 
 Use the right and left arrow keys to move between pages
 Press enter/return to exit the application
+
+
 *note*: Kicking off the app from a terminal may result in lost focus. alt-tab or click in to resume paging if that happens.
 
 
