@@ -1,3 +1,5 @@
+package com.project.coding;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,28 +24,30 @@ public class CurrentlyOpenFoodTrucks {
                 .collect(Collectors.toList());
 
         totalPages = paginatedList.size() / PAGE_SIZE;
-        if (totalPages % PAGE_SIZE > 0) {
+
+        if (paginatedList.size() % PAGE_SIZE > 0) {
             totalPages++;
         }
     }
 
     public List<FoodTruck> getCurrentPageContents() {
 
-        int lastElementIndex = paginatedList.size() - 1;
+        int lastIndexOfResults = paginatedList.size();
+        int lastIndexOfPages = currentPage * PAGE_SIZE + PAGE_SIZE;
 
         if (currentPage == 0) {
 
-            if (lastElementIndex < PAGE_SIZE) {
-                return paginatedList.subList(0, lastElementIndex);
+            if (lastIndexOfResults < PAGE_SIZE) {
+                return paginatedList.subList(0, lastIndexOfResults);
             } else {
                 return paginatedList.subList(0, PAGE_SIZE);
             }
 
         } else {
-            if (lastElementIndex < currentPage * PAGE_SIZE + PAGE_SIZE) {
-                return paginatedList.subList(currentPage * PAGE_SIZE, lastElementIndex);
+            if (lastIndexOfResults < lastIndexOfPages) {
+                return paginatedList.subList(currentPage * PAGE_SIZE, lastIndexOfResults);
             } else {
-                return paginatedList.subList(currentPage * PAGE_SIZE, currentPage * PAGE_SIZE + PAGE_SIZE);
+                return paginatedList.subList(currentPage * PAGE_SIZE, lastIndexOfPages);
             }
         }
     }

@@ -1,5 +1,9 @@
+package com.project.coding;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -59,11 +63,8 @@ public class FoodTruckFinder {
     private static ObjectMapper getMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.getTypeFactory().constructCollectionType(List.class, FoodTruck.class);
-        objectMapper.findAndRegisterModules();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         return objectMapper;
     }
 }
-
-
-// to run:
-// $ javac FoodTruckFinder.java && java FoodTruckFinder
