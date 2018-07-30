@@ -9,7 +9,13 @@ Per the requirements of the project, there are no tests for this application. Ho
 ### Running the App
 Clone the project, build with Maven, execute FoodTruckFinder.main() from your IDE of choice
 
--- OR --
+-- or --
+
+Run with Maven:
+
+    mvn exec:java
+    
+-- or --    
 
 Grab a pre-build jar file from the latest release in Github and run command
 
