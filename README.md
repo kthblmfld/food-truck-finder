@@ -21,7 +21,13 @@ Use the right and left arrow keys to move between pages
 Press enter/return to exit the application
 
 
-*note*: Kicking off the app from a terminal may result in lost focus. alt-tab or click in to resume paging if that happens.
+*note*: Starting the app from a terminal may result in lost focus. alt-tab in to resume paging if that happens.
+
+
+### Next Steps: Web Application
+System.exit(0);If asked to convert this project to a web application, I would replace FoodTruckTerminal with a rest service (like Spring Boot) and a web ui (like React). This would enable the user interface and core service to evolve in parallel and support the addition of data repository, mobile/responsive ui, new features, etc.
+ 
+Additionally, I would add automated tests/build jobs, and establish a continuous delivery process (ie pipelines) to ensure quality and rapid turnaround times. 
 
 
 ### Building a new jar
