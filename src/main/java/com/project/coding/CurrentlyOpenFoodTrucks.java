@@ -17,7 +17,8 @@ public class CurrentlyOpenFoodTrucks {
 
         paginatedList = listToPaginate.stream()
                 .filter(foodTruck ->
-                        foodTruck.getStartTime().isBefore(now.toLocalTime())
+                        (foodTruck.getStartTime().isBefore(now.toLocalTime())
+                                || foodTruck.getStartTime().equals(now.toLocalTime()))
                                 && foodTruck.getEndTime().isAfter(now.toLocalTime())
                                 && foodTruck.getDayOfWeek().equalsIgnoreCase(now.getDayOfWeek().name())
                 )
