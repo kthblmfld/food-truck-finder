@@ -31,9 +31,9 @@ Press enter/return to exit the application
 
 
 ### Next Steps: Web Application
-If asked to convert this project to a web application, I would replace FoodTruckTerminal with a rest service (like Spring Boot) and a web ui (like React). This would enable the user interface and core service to evolve in parallel and support the addition of data repository, mobile/responsive ui, new features, etc.
+If asked to convert this project to a web application, I would replace FoodTruckTerminal with a rest service (like Spring Boot) and a web ui (like React). This would enable the user interface and core service to evolve in parallel and support the addition of data repository, mobile/responsive ui, new features, etc. Currently the food truck data is only loaded at application startup and this raises the likelihood of stale data. The web app would need more intelligence about its currently loaded data set and how truck data is managed at scale (ie cached).
  
-Additionally, I would add automated tests/build jobs, and establish a continuous delivery process (ie pipelines) to ensure quality and rapid turnaround times. 
+Additionally, I would add automated tests/build jobs and establish a continuous delivery process (ie pipelines) to ensure quality and development turnaround time. 
 
 
 ### Building a new jar
