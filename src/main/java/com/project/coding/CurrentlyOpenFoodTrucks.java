@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class CurrentlyOpenFoodTrucks {
 
     private static final int PAGE_SIZE = 10;
-    private List<FoodTruck> paginatedList;
+    private final List<FoodTruck> foodTrucks;
     private int currentPage = 0;
     private int totalPages = 0;
 
@@ -15,7 +15,7 @@ public class CurrentlyOpenFoodTrucks {
 
         LocalDateTime now = LocalDateTime.now();
 
-        paginatedList = listToPaginate.stream()
+        foodTrucks = listToPaginate.stream()
                 .filter(foodTruck ->
                         (foodTruck.getStartTime().isBefore(now.toLocalTime())
                                 || foodTruck.getStartTime().equals(now.toLocalTime()))
@@ -24,43 +24,43 @@ public class CurrentlyOpenFoodTrucks {
                 )
                 .collect(Collectors.toList());
 
-        totalPages = paginatedList.size() / PAGE_SIZE;
+        totalPages = foodTrucks.size() / PAGE_SIZE;
 
-        if (paginatedList.size() % PAGE_SIZE > 0) {
+        if (foodTrucks.size() % PAGE_SIZE > 0) {
             totalPages++;
         }
     }
 
     public List<FoodTruck> getCurrentPageContents() {
 
-        int lastIndexOfResults = paginatedList.size();
+        int lastIndexOfResults = foodTrucks.size();
         int lastIndexOfPages = currentPage * PAGE_SIZE + PAGE_SIZE;
 
         if (currentPage == 0) {
 
             if (lastIndexOfResults < PAGE_SIZE) {
-                return paginatedList.subList(0, lastIndexOfResults);
+                return foodTrucks.subList(0, lastIndexOfResults);
             } else {
-                return paginatedList.subList(0, PAGE_SIZE);
+                return foodTrucks.subList(0, PAGE_SIZE);
             }
 
         } else {
             if (lastIndexOfResults < lastIndexOfPages) {
-                return paginatedList.subList(currentPage * PAGE_SIZE, lastIndexOfResults);
+                return foodTrucks.subList(currentPage * PAGE_SIZE, lastIndexOfResults);
             } else {
-                return paginatedList.subList(currentPage * PAGE_SIZE, lastIndexOfPages);
+                return foodTrucks.subList(currentPage * PAGE_SIZE, lastIndexOfPages);
             }
         }
     }
 
-    public List previousPage() {
+    public List<FoodTruck> previousPage() {
         if (hasPreviousPage()) {
             currentPage--;
         }
         return getCurrentPageContents();
     }
 
-    public List nextPage() {
+    public List<FoodTruck> nextPage() {
         if (hasNextPage()) {
             currentPage++;
         }
